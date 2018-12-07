@@ -37,9 +37,11 @@ def agent(rank, args, share_model, exp_queue, model_param):
 
 		r_batch.append(reward_gop)
 
-		logit, value = model(torch.FloatTensor(state).view(-1, args.s_gop_info, args.s_gop_len))
-		prob = F.softmax(logit, dim=1)
-		action = prob.multinomial(1).data.numpy()[0][0]
+		with torch.no_grad():
+			logit, value = model(torch.FloatTensor(state).view(-1, args.s_gop_info, args.s_gop_len))
+			prob = F.softmax(logit, dim=1)
+			action = prob.multinomial(1).data.numpy()[0][0]
+		
 		done = end_of_video 
 
 		if len(r_batch) >= args.max_update_step or done:
