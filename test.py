@@ -63,7 +63,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		reward_gop = 0
 		action = 0
 		# update model before testing all trace files
-		time.sleep(5)
+		# time.sleep(5)
 		model.load_state_dict(shared_model.state_dict()) 
 		while True:
 			# get the reward for one gop
