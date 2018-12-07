@@ -75,7 +75,7 @@ def test(args, shared_model, alg, video_file_id=1):
 					break
 				else:
 					continue
-
+			print('testing')
 			# get action from model
 			with torch.no_grad():
 				state = torch.FloatTensor(state)
@@ -86,7 +86,7 @@ def test(args, shared_model, alg, video_file_id=1):
 
 			if done:
 				print("video count %d, reward is %.5f" % (video_count, reward_all))
-				reward_all_sum += reward_all / 1000
+				reward_all_sum += reward_all / 100
 				video_count += 1
 				if video_count >= env.traces_len:
 					reward_all_ave = reward_all_sum / video_count
