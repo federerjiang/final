@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
 	processes = []
 
-	p = mp.Process(target=test, args=(args, model, 'A3C', 1))
+	p = mp.Process(target=test, args=(args, model, 'a3c', 1))
 	p.start()
 	processes.append(p)
 
