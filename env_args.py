@@ -17,7 +17,7 @@ class EnvArgs:
 
 		self.train_bw_trace = '../trace/network_trace/mix_trace/'
 		self.test_bw_trace = '../trace/test/'
-		self.train_video_size_files = \
+		self.video_size_files = \
 		['../trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_',
 		'../trace/video_trace/Fengtimo_2018_11_3/frame_trace_',
 		'../trace/video_trace/YYF_2018_08_12/frame_trace_']
