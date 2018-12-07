@@ -55,6 +55,7 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 	assert len(exp_queues) == args.num_processes
 
 	model = ActorCritic()
+	model.train()
 	# model.load_state_dict(share_model.state_dict())
 
 	optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-5)

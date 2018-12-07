@@ -10,12 +10,13 @@ from env_wrap import EnvWrap
 from model import ActorCritic
 
 
-def agent(rank, args, share_model, exp_queue, model_param):
+def agent(rank, args, exp_queue, model_param):
 	video_file_id = rank % 3
 	env = EnvWrap(video_file_id)
 
 	model = ActorCritic()
 	model.load_state_dict(model_param.get())
+	model.eval()
 
 	state = env.reset()
 	action = 0

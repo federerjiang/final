@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 	# create processes for multiple agents
 	for rank in range(0, args.num_processes):
-		p = mp.Process(target=agent, args=(rank, args, model, exp_queues[rank], model_params[rank]))
+		p = mp.Process(target=agent, args=(rank, args, exp_queues[rank], model_params[rank]))
 		p.start()
 
 	# wait until training is done
