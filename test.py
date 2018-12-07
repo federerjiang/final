@@ -68,7 +68,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		while True:
 			# get the reward for one gop
 			while True:
-				_, done, decisoin_flag = env.step_gop(action)
+				_, done, decision_flag = env.step_gop(action)
 				if decision_flag or done:
 					reward_gop = env.get_reward_gop()
 					state = env.get_state_gop()
