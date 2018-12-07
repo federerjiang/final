@@ -62,6 +62,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		reward_all_ave = 0
 		reward_gop = 0
 		action = 0
+		last_action = 0
 		# update model before testing all trace files
 		# time.sleep(5)
 		model.load_state_dict(shared_model.state_dict()) 
@@ -77,6 +78,7 @@ def test(args, shared_model, alg, video_file_id=1):
 					continue
 			# print('testing')
 			# get action from model
+			last_action = action
 			with torch.no_grad():
 				state = torch.FloatTensor(state)
 				logit, _ = model(state.view(-1, args.s_gop_info, args.s_gop_len))
@@ -84,6 +86,8 @@ def test(args, shared_model, alg, video_file_id=1):
 				_, action = torch.max(prob, 1)
 				action = action.data.numpy()[0]
 
+			bitrate, target_buffer = _set_action_map(last_action)
+			print('bitrate: %d, target_buffer: %d, reward is %s' % (bitrate, target_buffer, reward_gop))
 			if done:
 				print("video count %d, reward is %.5f" % (video_count, reward_all))
 				reward_all_sum += reward_all / 100
@@ -92,6 +96,7 @@ def test(args, shared_model, alg, video_file_id=1):
 					reward_all_ave = reward_all_sum / video_count
 					break
 				action = 0
+				last_action = 0
 				reward_all = 0
 
 			reward_all += reward_gop
@@ -99,7 +104,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		# update the figure of average reward of all testing files
 		vis_count += 1
 		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
-		path = alg+'/result/actor.pt-' + str(vis_count)
+		path = 'result/actor.pt-' + str(vis_count)
 		torch.save(model.state_dict(), path)
 		print('saved one model in epoch:', vis_count)
 
