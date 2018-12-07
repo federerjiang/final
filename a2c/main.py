@@ -9,7 +9,6 @@ from coordinator import coordinator
 
 import sys
 sys.path.insert(0,'..')
-from env_args import EnvArgs
 from model import ActorCritic
 from test import test
 
@@ -19,7 +18,6 @@ if __name__ == '__main__':
 	torch.set_num_threads(1)
 
 	args = Args()
-	env_args = EnvArgs()
 	torch.manual_seed(args.seed)
 	
 	model = ActorCritic()
@@ -41,7 +39,7 @@ if __name__ == '__main__':
 
 	# create processes for multiple agents
 	for rank in range(0, args.num_processes):
-		p = mp.Process(target=agent, args=(rank, args, env_args, model, exp_queues[rank], model_params[rank]))
+		p = mp.Process(target=agent, args=(rank, args, model, exp_queues[rank], model_params[rank]))
 		p.start()
 
 	# wait until training is done
