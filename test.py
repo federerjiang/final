@@ -86,7 +86,7 @@ def test(args, shared_model, alg, video_file_id=1):
 				_, action = torch.max(prob, 1)
 				action = action.data.numpy()[0]
 
-			bitrate, target_buffer = action_map(last_action)
+			bitrate, target_buffer = action_map[last_action]
 			print('bitrate: %d, target_buffer: %d, reward is %s' % (bitrate, target_buffer, reward_gop))
 			if done:
 				print("video count %d, reward is %.5f" % (video_count, reward_all))
