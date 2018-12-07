@@ -118,6 +118,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		hours, rem = divmod(end-start, 3600)
 		minutes, seconds = divmod(rem, 60)
 		print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+		print("average reward of 5 traces are: ", reward_all_ave)
 		print('saved one model in epoch:', vis_count)
 
 
