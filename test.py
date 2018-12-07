@@ -40,6 +40,7 @@ def test(args, shared_model, alg, video_file_id=1):
 
 	env = FixedEnvWrap(video_file_id)
 
+	time.sleep(10)
 	model = ActorCritic()
 	model.load_state_dict(shared_model.state_dict())
 	model.eval()
