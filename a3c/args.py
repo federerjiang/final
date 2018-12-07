@@ -10,7 +10,7 @@ class Args:
 		self.entropy_coef = 3 #
 		self.value_loss_coef = 0.5 #
 		self.max_grad_norm = 0.1 #
-		self.num_processes = 12
+		self.num_processes = 9
 		self.seed = 30 #
 		self.s_gop_info = 7
 		self.s_gop_len = 16

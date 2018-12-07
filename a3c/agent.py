@@ -118,7 +118,7 @@ def agent(rank, args, share_model):
 			optimizer.step()
 			model.zero_grad()			
 			share_model.load_state_dict(model.state_dict())
-			print('update model')
+			# print('update model')
 
 			del s_batch[:]
 			del a_batch[:]
