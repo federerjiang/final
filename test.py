@@ -64,7 +64,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		action = 0
 		last_action = 0
 		# update model before testing all trace files
-		# time.sleep(5)
+		time.sleep(5)
 		model.load_state_dict(shared_model.state_dict()) 
 		while True:
 			# get the reward for one gop
@@ -87,7 +87,7 @@ def test(args, shared_model, alg, video_file_id=1):
 				action = action.data.numpy()[0]
 
 			bitrate, target_buffer = action_map[last_action]
-			print('bitrate: %d, target_buffer: %d, reward is %s' % (bitrate, target_buffer, reward_gop))
+			# print('bitrate: %d, target_buffer: %d, reward is %s' % (bitrate, target_buffer, reward_gop))
 			if done:
 				print("video count %d, reward is %.5f" % (video_count, reward_all))
 				reward_all_sum += reward_all / 100
@@ -106,7 +106,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
 		path = 'result/actor.pt-' + str(vis_count)
 		torch.save(model.state_dict(), path)
-		print('saved one model in epoch:', vis_count)
+		# print('saved one model in epoch:', vis_count)
 
 
 
