@@ -46,11 +46,12 @@ def agent(rank, args, exp_queue, model_param):
 		done = end_of_video 
 
 		if len(r_batch) >= args.max_update_step or done:
-			exp_queue.put([s_batch[1:],
-							a_batch[1:],
-							r_batch[1:],
-							done])
-			model.load_state_dict(model_param.get())
+			if len(s_batch) >= 5:
+				exp_queue.put([s_batch[1:],
+								a_batch[1:],
+								r_batch[1:],
+								done])
+				model.load_state_dict(model_param.get())
 			del s_batch[:]
 			del a_batch[:]
 			del r_batch[:]
