@@ -17,7 +17,7 @@ class FixedEnvWrap(fixed_env.Environment):
 						 Debug=False)
 		
 		# self.state = np.zeros((args.s_info, args.s_len)) # state info for past frames
-		self.state_gop = np.zeros((args.s_gop_info, args.s_gop_len)) # state info for past gops
+		self.state_gop = np.zeros((self.args.s_gop_info, self.args.s_gop_len)) # state info for past gops
 		self.last_bit_rate = 0
 		self.reward_gop = 0
 		self.last_reward_gop = 0

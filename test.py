@@ -35,10 +35,10 @@ def _set_action_map():
 	return action_map
 
 
-def test(env_args, shared_model, alg, video_file_id=1):
+def test(args, shared_model, alg, video_file_id=1):
 	action_map = _set_action_map()
 
-	env = FixedEnvWrap(env_args, video_file_id)
+	env = FixedEnvWrap(video_file_id)
 
 	model = ActorCritic()
 	model.load_state_dict(shared_model.state_dict())
@@ -79,7 +79,7 @@ def test(env_args, shared_model, alg, video_file_id=1):
 			# get action from model
 			with torch.no_grad():
 				state = torch.FloatTensor(state)
-				logit, _ = model(state.view(-1, env_args.s_gop_info, env_args.s_gop_len))
+				logit, _ = model(state.view(-1, args.s_gop_info, args.s_gop_len))
 				prob = F.softmax(logit, dim=1)
 				_, action = torch.max(prob, 1)
 				action = action.data.numpy()[0]

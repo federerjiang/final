@@ -7,7 +7,6 @@ from agent import agent
 
 import sys
 sys.path.insert(0,'..')
-from env_args import EnvArgs 
 from model import ActorCritic
 from test import test
 
@@ -16,7 +15,6 @@ if __name__ == '__main__':
 	torch.set_num_threads(1)
 
 	args = Args()
-	env_args = EnvArgs()
 	torch.manual_seed(args.seed)
 	
 	model = ActorCritic()
@@ -24,12 +22,12 @@ if __name__ == '__main__':
 
 	processes = []
 
-	p = mp.Process(target=test, args=(env_args, model, 'A3C', video_file_id))
-	p.start()
-	processes.append(p)
+	# p = mp.Process(target=test, args=(env_args, model, 'A3C', 1))
+	# p.start()
+	# processes.append(p)
 
 	for rank in range(0, args.num_processes):
-		p = mp.Process(target=agent, args=(rank, args, env_args, model))
+		p = mp.Process(target=agent, args=(rank, args, model))
 		p.start()
 		processes.append(p)
 	for p in processes:

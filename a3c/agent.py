@@ -7,7 +7,6 @@ import sys
 sys.path.insert(0,'..')
 from env_wrap import EnvWrap
 from model import ActorCritic
-from storage import RolloutStorage
 
 
 def ensure_shared_grads(model, shared_model):
@@ -20,6 +19,7 @@ def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
 	assert len(s_batch) == len(r_batch)
 
 	ba_size = len(s_batch)
+	print(ba_size)
 	s_batch = torch.FloatTensor(s_batch).view(-1, args.s_gop_info, args.s_gop_len)
 	logits, v_batch = model(s_batch, batch_size=ba_size)
 	r_batch = torch.FloatTensor(r_batch).view(ba_size, -1)
@@ -58,10 +58,10 @@ def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
 	return loss
 
 
-def train(rank, args, env_args, share_model):
+def agent(rank, args, share_model):
 	torch.manual_seed(args.seed+rank)
 	video_file_id = rank % 3
-	env = EnvWrap(env_args, video_file_id)
+	env = EnvWrap(video_file_id)
 
 	model = ActorCritic()
 	model.load_state_dict(share_model.state_dict())
@@ -74,6 +74,8 @@ def train(rank, args, env_args, share_model):
 	state = env.reset()
 	action = 0
 
+	s_batch = [state]
+	a_batch = [action]
 	r_batch = []
 
 	count = 0
@@ -92,8 +94,7 @@ def train(rank, args, env_args, share_model):
 
 		r_batch.append(reward_gop)
 
-		state = torch.FloatTensor(state)
-		logit, value = model(state.view(-1, args.s_gop_info, args.s_gop_len))
+		logit, value = model(torch.FloatTensor(state).view(-1, args.s_gop_info, args.s_gop_len))
 		prob = F.softmax(logit, dim=1)
 		action = prob.multinomial(1).data.numpy()[0][0]
 		done = end_of_video
@@ -114,7 +115,8 @@ def train(rank, args, env_args, share_model):
 			loss.backward(retain_graph=True)
 			torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
 			# ensure_shared_grads(model, share_model)
-			optimizer.step()			
+			optimizer.step()
+			model.zero_grad()			
 			share_model.load_state_dict(model.state_dict())
 
 			del s_batch[:]
