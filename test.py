@@ -94,6 +94,9 @@ def test(args, shared_model, alg, video_file_id=1):
 				print("video count %d, reward is %.5f" % (video_count, reward_all))
 				reward_all_sum += reward_all / 100
 				video_count += 1
+				if reward_all < 0:
+					print('bad model ! just break this loop')
+					break 
 				if video_count >= env.traces_len:
 					reward_all_ave = reward_all_sum / video_count
 					break
