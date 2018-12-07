@@ -108,7 +108,12 @@ def test(args, shared_model, alg, video_file_id=1):
 		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
 		path = 'result/actor.pt-' + str(vis_count)
 		torch.save(model.state_dict(), path)
-		# print('saved one model in epoch:', vis_count)
+
+		end = time.time()
+		hours, rem = divmod(end-start, 3600)
+		minutes, seconds = divmod(rem, 60)
+		print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+		print('saved one model in epoch:', vis_count)
 
 
 
