@@ -19,7 +19,7 @@ def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
 	assert len(s_batch) == len(r_batch)
 
 	ba_size = len(s_batch)
-	print(ba_size)
+	# print(ba_size)
 	s_batch = torch.FloatTensor(s_batch).view(-1, args.s_gop_info, args.s_gop_len)
 	logits, v_batch = model(s_batch, batch_size=ba_size)
 	r_batch = torch.FloatTensor(r_batch).view(ba_size, -1)
