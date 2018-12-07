@@ -2,12 +2,12 @@ import LiveStreamingEnv.fixed_env as fixed_env
 import LiveStreamingEnv.load_trace as load_trace
 import numpy as np
 
-from env_args import Args 
+from env_args import EnvArgs 
 
 class FixedEnvWrap(fixed_env.Environment):
 	
 	def __init__(self, video_file_id):
-		self.args = Args()
+		self.args = EnvArgs()
 		all_cooked_time, all_cooked_bw, all_file_names = load_trace.load_trace(self.args.test_bw_trace)
 		super().__init__(all_cooked_time=all_cooked_time,
 						 all_cooked_bw=all_cooked_bw,
