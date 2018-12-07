@@ -64,7 +64,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		action = 0
 		last_action = 0
 		# update model before testing all trace files
-		time.sleep(5)
+		# time.sleep(5)
 		print('load updated model')
 		model.load_state_dict(shared_model.state_dict()) 
 		while True:
