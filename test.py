@@ -75,7 +75,7 @@ def test(args, shared_model, alg, video_file_id=1):
 					break
 				else:
 					continue
-			print('testing')
+			# print('testing')
 			# get action from model
 			with torch.no_grad():
 				state = torch.FloatTensor(state)
