@@ -104,6 +104,7 @@ def test(args, shared_model, alg, video_file_id=1):
 
 		# update the figure of average reward of all testing files
 		vis_count += 1
+		reward_all_ave = max(reward_all_ave, 0)
 		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
 		path = 'result/actor.pt-' + str(vis_count)
 		torch.save(model.state_dict(), path)
