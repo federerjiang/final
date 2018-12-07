@@ -80,7 +80,7 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 			loss.backward(retain_graph=True)
 			torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
 			optimizer.step()
-		# print('update model parameters')
+		print('update model parameters')
 
 		share_model.load_state_dict(model.state_dict())
 	
