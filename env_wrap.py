@@ -125,7 +125,7 @@ class EnvWrap(env.Environment):
 			reward_frame = -(self.args.rebuf_penalty * rebuf)
 
 		# collect finer level thps / interval > 0.5s
-		if not cdn_flag:
+		if not cdn_flag and time_interval > 0:
 			frame_thp = send_data_size / time_interval 
 			if frame_thp != self.last_frame_thp:
 				self.frame_thps.pop(0)
