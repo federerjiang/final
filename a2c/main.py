@@ -22,7 +22,7 @@ if __name__ == '__main__':
 	torch.manual_seed(args.seed)
 	
 	model = ActorCritic()
-	# model.load_state_dict(torch.load('result/actor.pt-1516'))
+	model.load_state_dict(torch.load('result-v2/actor.pt-867'))
 	model.share_memory()
 
 	# inter-process communication queues
