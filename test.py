@@ -54,7 +54,7 @@ def test(args, shared_model, alg, video_file_id=1):
 	line_plot = vis.line(Y=np.array([0]), opts=dict(
 						xlabel='testing count',
 						ylabel='average reward',
-						title=alg+'-low'))
+						title=alg+'-fft'))
 
 	start = time.time()
 	vis_count = 0
