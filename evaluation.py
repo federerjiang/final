@@ -103,9 +103,9 @@ def test(args, model, bw_trace, video_file_id=3):
 
 if __name__ == '__main__':
 	model = ActorCritic()
-	model.load_state_dict(torch.load('/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/actor.pt-1283'))
+	model.load_state_dict(torch.load('/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/actor.pt-1516'))
 	args = EnvArgs()
-	test(args, model, 'eval-middle')
+	test(args, model, 'eval-test')
 
 
 

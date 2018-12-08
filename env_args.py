@@ -22,7 +22,8 @@ class EnvArgs:
 						'test': '../trace/test/',
 						'eval-high': 'trace/network_trace/high/',
 						'eval-middle': 'trace/network_trace/middle/',
-						'eval-low': 'trace/network_trace/low/'}
+						'eval-low': 'trace/network_trace/low/',
+						'eval-test': 'trace/test/'}
 
 		self.video_size_files = \
 		['../trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_',
