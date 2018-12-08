@@ -65,9 +65,9 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 	count = 0
 	while True:
 		count += 1
-		if count >=17000:
+		if count >=16000:
 			entropy_coef = 1
-		if count >= 25000:
+		if count >= 20000:
 			entropy_coef = 0.5
 		if count >= 25000:
 			entropy_coef = 0.1
