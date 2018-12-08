@@ -7,10 +7,10 @@ import numpy as np
 import torch
 import torch.nn.functional as F 
 
-# from fixed_env_wrap import FixedEnvWrap 
-# from model import ActorCritic
-from fixed_env_wrap_fft import FixedEnvWrap 
-from model_fft import ActorCritic
+from fixed_env_wrap import FixedEnvWrap 
+from model import ActorCritic
+# from fixed_env_wrap_fft import FixedEnvWrap 
+# from model_fft import ActorCritic
 
 
 def _set_action_map():
@@ -54,7 +54,7 @@ def test(args, shared_model, alg, video_file_id=1):
 	line_plot = vis.line(Y=np.array([0]), opts=dict(
 						xlabel='testing count',
 						ylabel='average reward',
-						title=alg+'-fft'))
+						title=alg+'-v2'))
 
 	start = time.time()
 	vis_count = 0
@@ -113,7 +113,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		vis_count += 1
 		reward_all_ave = max(reward_all_ave, 0)
 		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
-		path = 'result-fft/actor.pt-' + str(vis_count)
+		path = 'result-v2/actor.pt-' + str(vis_count)
 		torch.save(model.state_dict(), path)
 
 		end = time.time()

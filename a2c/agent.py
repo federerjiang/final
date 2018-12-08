@@ -6,10 +6,10 @@ import numpy as np
 
 import sys
 sys.path.insert(0,'..')
-# from env_wrap import EnvWrap
-# from model import ActorCritic
-from env_wrap_fft import EnvWrap
-from model_fft import ActorCritic
+from env_wrap import EnvWrap
+from model import ActorCritic
+# from env_wrap_fft import EnvWrap
+# from model_fft import ActorCritic
 
 
 def agent(rank, args, exp_queue, model_param):

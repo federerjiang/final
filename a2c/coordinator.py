@@ -5,7 +5,8 @@ import numpy as np
 
 import sys
 sys.path.insert(0,'..')
-from model_fft import ActorCritic
+# from model_fft import ActorCritic
+from model import ActorCritic
 
 # coordinator is only for updating model's weights based on coolected experiences from exp_queues
 def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
