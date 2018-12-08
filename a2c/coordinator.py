@@ -64,11 +64,11 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 	count = 0
 	while True:
 		count += 1
-		if count >=70000:
+		if count >=30000:
 			entropy_coef = 1
-		if count >= 120000:
+		if count >= 70000:
 			entropy_coef = 0.5
-		if count >= 150000:
+		if count >= 100000:
 			entropy_coef = 0.1
 
 		for i in range(args.num_processes):
@@ -81,7 +81,7 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 			loss.backward(retain_graph=True)
 			torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
 			optimizer.step()
-		print('update model parameters')
+		print('update model parameters ', count)
 
 		share_model.load_state_dict(model.state_dict())
 	
