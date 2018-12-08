@@ -1,12 +1,12 @@
-import LiveStreamingEnv.env as env
+import LiveStreamingEnv.fixed_env as fixed_env
 import LiveStreamingEnv.load_trace as load_trace
 import numpy as np
 
 from env_args import EnvArgs 
 
-class EnvWrap(env.Environment):
+class FixedEnvWrap(fixed_env.Environment):
 	
-	def __init__(self, video_file_id, trace='mix'):
+	def __init__(self, video_file_id, trace='test'):
 		self.args = EnvArgs()
 		all_cooked_time, all_cooked_bw, all_file_names = load_trace.load_trace(self.args.bw_trace[trace])
 		super().__init__(all_cooked_time=all_cooked_time,
@@ -165,9 +165,9 @@ class EnvWrap(env.Environment):
 			self.state_gop[6, :4] = self.next_gop_sizes / 1000000 # gop size (Mb) [0, 10] [conv]
 			# self.state_gop[7, :] = self.frame_thps # finer level thps
 			# test new features, FFT of thps
-			# _fft = np.fft.fft(self.frame_thps)
-			# self.state_gop[7, :] = _fft.real 
-			# self.state_gop[8, :] = _fft.real 
+			_fft = np.fft.fft(self.frame_thps)
+			self.state_gop[7, :] = _fft.real # [conv]
+			self.state_gop[8, :] = _fft.real # [conv]
 
 			# reset gop info
 			self.gop_time_interval = time_interval

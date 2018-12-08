@@ -5,7 +5,7 @@ import numpy as np
 
 import sys
 sys.path.insert(0,'..')
-from model import ActorCritic
+from model_fft import ActorCritic
 
 # coordinator is only for updating model's weights based on coolected experiences from exp_queues
 def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
@@ -64,11 +64,11 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 	count = 0
 	while True:
 		count += 1
-		if count >=15000:
+		if count >=17000:
 			entropy_coef = 1
-		if count >= 20000:
+		if count >= 25000:
 			entropy_coef = 0.5
-		if count >= 30000:
+		if count >= 25000:
 			entropy_coef = 0.1
 
 		for i in range(args.num_processes):

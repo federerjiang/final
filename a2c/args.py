@@ -13,7 +13,7 @@ class Args:
 		self.max_grad_norm = 0.1 #
 		self.num_processes = 12
 		self.seed = 30 #
-		self.s_gop_info = 7
+		self.s_gop_info = 9 # or 7
 		self.s_gop_len = 16
 
 

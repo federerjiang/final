@@ -1,16 +1,15 @@
+# this file is for evaluating trained models
 # based on online.py
 
 import time
-import visdom
 import numpy as np 
 
 import torch
 import torch.nn.functional as F 
 
-# from fixed_env_wrap import FixedEnvWrap 
-# from model import ActorCritic
-from fixed_env_wrap_fft import FixedEnvWrap 
-from model_fft import ActorCritic
+from fixed_env_wrap import FixedEnvWrap 
+from model import ActorCritic
+from env_args import EnvArgs
 
 
 def _set_action_map():
@@ -37,27 +36,16 @@ def _set_action_map():
 	return action_map
 
 
-def test(args, shared_model, alg, video_file_id=1):
+def test(args, model, bw_trace, video_file_id=3):
 	action_map = _set_action_map()
 
-	env = FixedEnvWrap(video_file_id)
+	env = FixedEnvWrap(video_file_id, bw_trace)
 
-	time.sleep(10)
-	model = ActorCritic()
-	model.load_state_dict(shared_model.state_dict())
 	model.eval()
 
 	state = env.reset()
 
-	training_time = 0
-	vis = visdom.Visdom(env='test')
-	line_plot = vis.line(Y=np.array([0]), opts=dict(
-						xlabel='testing count',
-						ylabel='average reward',
-						title=alg+'-low'))
-
 	start = time.time()
-	vis_count = 0
 	while True:
 		video_count = 0
 		reward_all_sum = 0
@@ -66,10 +54,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		reward_gop = 0
 		action = 0
 		last_action = 0
-		# update model before testing all trace files
-		# time.sleep(5)
-		print('load updated model')
-		model.load_state_dict(shared_model.state_dict()) 
+
 		while True:
 			# get the reward for one gop
 			while True:
@@ -83,12 +68,12 @@ def test(args, shared_model, alg, video_file_id=1):
 			# print('testing')
 			# get action from model
 			last_action = action
-			with torch.no_grad():
-				state = torch.FloatTensor(state)
-				logit, _ = model(state.view(-1, args.s_gop_info, args.s_gop_len))
-				prob = F.softmax(logit, dim=1)
-				_, action = torch.max(prob, 1)
-				action = action.data.numpy()[0]
+				
+			state = torch.FloatTensor(state)
+			logit, _ = model(state.view(-1, args.s_gop_info, args.s_gop_len))
+			prob = F.softmax(logit, dim=1)
+			_, action = torch.max(prob, 1)
+			action = action.data.numpy()[0]
 
 			bitrate, target_buffer = action_map[last_action]
 			# print('bitrate: %d, target_buffer: %d, reward is %s' % (bitrate, target_buffer, reward_gop))
@@ -96,10 +81,10 @@ def test(args, shared_model, alg, video_file_id=1):
 				print("video count %d, reward is %.5f" % (video_count, reward_all))
 				reward_all_sum += reward_all / 100
 				video_count += 1
-				if reward_all < 0:
-					print('bad model ! just break this loop')
-					reward_all_ave = 0
-					break 
+				# if reward_all < 0:
+					# print('bad model ! just break this loop')
+					# reward_all_ave = 0
+					# break 
 				if video_count >= env.traces_len:
 					reward_all_ave = reward_all_sum / video_count
 					break
@@ -109,19 +94,18 @@ def test(args, shared_model, alg, video_file_id=1):
 
 			reward_all += reward_gop
 
-		# update the figure of average reward of all testing files
-		vis_count += 1
-		reward_all_ave = max(reward_all_ave, 0)
-		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
-		path = 'result-fft/actor.pt-' + str(vis_count)
-		torch.save(model.state_dict(), path)
-
 		end = time.time()
 		hours, rem = divmod(end-start, 3600)
 		minutes, seconds = divmod(rem, 60)
 		print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
 		print("average reward of traces are: ", reward_all_ave)
-		print('saved one model in epoch:', vis_count)
+
+
+if __name__ == '__main__':
+	model = ActorCritic()
+	model.load_state_dict(torch.load('/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/actor.pt-1283'))
+	args = EnvArgs()
+	test(args, model, 'eval-middle')
 
 
 

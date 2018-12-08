@@ -9,7 +9,7 @@ from coordinator import coordinator
 
 import sys
 sys.path.insert(0,'..')
-from model import ActorCritic
+from model_fft import ActorCritic
 from test import test
 
 

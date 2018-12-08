@@ -6,9 +6,9 @@ from env_args import EnvArgs
 
 class FixedEnvWrap(fixed_env.Environment):
 	
-	def __init__(self, video_file_id):
+	def __init__(self, video_file_id, trace='test'):
 		self.args = EnvArgs()
-		all_cooked_time, all_cooked_bw, all_file_names = load_trace.load_trace(self.args.test_bw_trace)
+		all_cooked_time, all_cooked_bw, all_file_names = load_trace.load_trace(self.args.bw_trace[trace])
 		super().__init__(all_cooked_time=all_cooked_time,
 						 all_cooked_bw=all_cooked_bw,
 						 random_seed=self.args.random_seed,
@@ -28,6 +28,10 @@ class FixedEnvWrap(fixed_env.Environment):
 		self.gop_size = 0
 		self.next_gop_sizes = 0
 		self.gop_delay = 0
+
+		# record finer level thps, thp/0.5s
+		self.frame_thps = [0] * 16
+		self.last_frame_thp = 0.0
 
 		# info for traces
 		self.traces_len = len(all_file_names)
@@ -120,21 +124,31 @@ class FixedEnvWrap(fixed_env.Environment):
 		else:
 			reward_frame = -(self.args.rebuf_penalty * rebuf)
 
+		# collect finer level thps / interval > 0.5s
+		if not cdn_flag and time_interval > 0:
+			frame_thp = send_data_size / time_interval 
+			if frame_thp != self.last_frame_thp:
+				self.frame_thps.pop(0)
+				self.frame_thps.append(frame_thp / 1000000)
+				self.last_frame_thp = frame_thp
+
 		if not decision_flag:
 
 			self.reward_gop += reward_frame
 
 			# collect frames info in last gop
-			self.gop_time_interval += time_interval
-			self.gop_size += send_data_size
-			self.gop_delay += end_delay
-
+			if not cdn_flag: # if cdn is rebuffering, then time interval is not download time
+				self.gop_time_interval += time_interval
+	
+			self.gop_size += send_data_size # last gop size
+			self.gop_delay += end_delay # last gop size
 
 		if decision_flag or end_of_video:
 			reward_frame += -1 * self.args.smooth_penalty * (abs(self.args.bitrate[bit_rate] - self.args.bitrate[self.last_bit_rate]) / 1000)
 			self.last_bit_rate = bit_rate
+			self.reward_gop += reward_frame # the last frame in a gop
 			self.last_reward_gop = self.reward_gop
-			self.reward_gop = reward_frame
+			self.reward_gop = 0 # reset reward gop as 0
 			
 			# calculate next gop sizes for 4 bitrate levels [500k, 800k, 1200k, 1800k]
 			self.next_gop_sizes = self._get_next_gop_sizes(cdn_has_frame)
@@ -143,11 +157,17 @@ class FixedEnvWrap(fixed_env.Environment):
 			self.state_gop = np.roll(self.state_gop, -1, axis=1)
 			self.state_gop[0, -1] = buffer_size # current buffer size [0, 10] [fc]
 			self.state_gop[1, -1] = self.args.bitrate[bit_rate] / 1000 # last bitrate [0, 2] [fc]
-			self.state_gop[2, -1] = self.gop_size / 1000000 / max(self.gop_time_interval, 1e-6) # last throughput Mbps [0, 10] [conv]
+			# self.state_gop[2, -1] = self.gop_size / 1000000 / max(self.gop_time_interval, 1e-6) # last throughput Mbps [0, 10] [conv]
+			self.state_gop[2, :] = self.frame_thps # last throughput Mbps [0, 10] [conv]
 			self.state_gop[3, -1] = self.gop_delay / 100 # gop delay (100ms) [conv]
 			self.state_gop[4, -1] = (1 if buffer_flag else 0) # if True, no buffering content, should choose target buffer as 0. [fc]
 			self.state_gop[5, -1] = (1 if cdn_flag else 0) # if True, cdn has no content. [fc]
 			self.state_gop[6, :4] = self.next_gop_sizes / 1000000 # gop size (Mb) [0, 10] [conv]
+			# self.state_gop[7, :] = self.frame_thps # finer level thps
+			# test new features, FFT of thps
+			# _fft = np.fft.fft(self.frame_thps)
+			# self.state_gop[7, :] = _fft.real 
+			# self.state_gop[8, :] = _fft.real 
 
 			# reset gop info
 			self.gop_time_interval = time_interval
