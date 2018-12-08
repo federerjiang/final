@@ -15,7 +15,10 @@ class EnvArgs:
 		self.rebuf_penalty = 1.5
 		self.latency_penalty = 0.005
 
-		self.train_bw_trace = '../trace/network_trace/mix_trace/'
+		self.train_bw_trace = {'mix': '../trace/network_trace/mix_trace/',
+							'high': '../trace/network_trace/high/',
+							'middle': '../trace/network_trace/middle/',
+							'low': '../trace/network_trace/low/'}
 		self.test_bw_trace = '../trace/test/'
 		self.video_size_files = \
 		['../trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_',

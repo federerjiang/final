@@ -12,7 +12,7 @@ from model import ActorCritic
 
 def agent(rank, args, exp_queue, model_param):
 	video_file_id = rank % 3
-	env = EnvWrap(video_file_id)
+	env = EnvWrap(video_file_id, bw_trace='high')
 
 	model = ActorCritic()
 	model.load_state_dict(model_param.get())
