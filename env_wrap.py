@@ -158,7 +158,7 @@ class EnvWrap(env.Environment):
 			self.state_gop[0, -1] = buffer_size # current buffer size [0, 10] [fc]
 			self.state_gop[1, -1] = self.args.bitrate[bit_rate] / 1000 # last bitrate [0, 2] [fc]
 			# self.state_gop[2, -1] = self.gop_size / 1000000 / max(self.gop_time_interval, 1e-6) # last throughput Mbps [0, 10] [conv]
-			self.state_gop[2, -1] = self.frame_thps # last throughput Mbps [0, 10] [conv]
+			self.state_gop[2, :] = self.frame_thps # last throughput Mbps [0, 10] [conv]
 			self.state_gop[3, -1] = self.gop_delay / 100 # gop delay (100ms) [conv]
 			self.state_gop[4, -1] = (1 if buffer_flag else 0) # if True, no buffering content, should choose target buffer as 0. [fc]
 			self.state_gop[5, -1] = (1 if cdn_flag else 0) # if True, cdn has no content. [fc]
