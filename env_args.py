@@ -29,4 +29,6 @@ class EnvArgs:
 		['../trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_',
 		'../trace/video_trace/Fengtimo_2018_11_3/frame_trace_',
 		'../trace/video_trace/YYF_2018_08_12/frame_trace_',
-		'trace/video_trace/Fengtimo_2018_11_3/frame_trace_']
+		'trace/video_trace/Fengtimo_2018_11_3/frame_trace_',
+		'trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_',
+		'trace/video_trace/YYF_2018_08_12/frame_trace_']

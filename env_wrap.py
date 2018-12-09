@@ -127,7 +127,7 @@ class EnvWrap(env.Environment):
 		# collect finer level thps / interval > 0.5s
 		if not cdn_flag and time_interval > 0:
 			frame_thp = send_data_size / time_interval 
-			if frame_thp != self.last_frame_thp:
+			if frame_thp != self.last_frame_thp: # record thp every 0.5s, or just check if time interval
 				self.frame_thps.pop(0)
 				self.frame_thps.append(frame_thp / 1000000)
 				self.last_frame_thp = frame_thp
