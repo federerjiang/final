@@ -105,7 +105,7 @@ if __name__ == '__main__':
 	model = ActorCritic()
 	model.load_state_dict(torch.load('/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/actor.pt-1516'))
 	args = EnvArgs()
-	test(args, model, 'eval-test')
+	test(args, model, 'eval-test', video_file_id=5)
 
 
 
