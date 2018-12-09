@@ -126,5 +126,8 @@ def test(args, shared_model, alg, video_file_id=1):
 # result-v3 
 # 4375: 30.12764; 4203: 29.76445; 2463: 29.75238; 1907: 29.444
 
+# result-v2
+# 773: 29.7444
+
 
 
