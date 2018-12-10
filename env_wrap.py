@@ -118,7 +118,7 @@ class EnvWrap(env.Environment):
 		buffer_size, play_time_len,end_delay, cdn_newest_id,\
 		download_id, cdn_has_frame, decision_flag, buffer_flag,cdn_flag, end_of_video =\
 		self.get_video_frame(bit_rate, target_buffer)
-		print(cdn_flag)
+		# print(cdn_flag)
 		# reward setting
 		if not cdn_flag:
 			reward_frame = self.args.frame_time_len * float(self.args.bitrate[bit_rate]) / 1000 \
