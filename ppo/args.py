@@ -9,9 +9,9 @@ class Args:
 		self.tau = 1.00 #
 		self.num_mini_batch = 24
 		self.clip_param = 0.2
-		self.use_clipped_value_loss = True
+		self.use_clipped_value_loss = False
 		# self.entropy_coef = 0.5 # pretrain start from 1
-		self.entropy_coef = 0.01 # begin from 3, then gradually reduce to 0.1
+		self.entropy_coef = 3 # begin from 3, then gradually reduce to 0.1
 		self.value_loss_coef = 1 #
 		self.max_grad_norm = 0.1 #
 		self.num_processes = 12

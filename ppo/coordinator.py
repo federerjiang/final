@@ -115,7 +115,7 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 		del values_batch
 		del old_action_log_probs_batch
 		del advantages_batch
-		
+
 		print('update model parameters ', count)
 		share_model.load_state_dict(model.state_dict())
 		# break
