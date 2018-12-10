@@ -33,6 +33,9 @@ class FixedEnvWrap(fixed_env.Environment):
 		self.frame_thps = [0] * 16
 		self.last_frame_thp = 0.0
 
+		# record cdn flags
+		self.cdn_flags = [0] * 16
+
 		# info for traces
 		self.traces_len = len(all_file_names)
 
@@ -132,6 +135,11 @@ class FixedEnvWrap(fixed_env.Environment):
 				self.frame_thps.append(frame_thp / 1000000)
 				self.last_frame_thp = frame_thp
 
+		# collect cdn flags info
+		self.cdn_flags.pop(0)
+		cdn_flag = 1 if cdn_flag else 0
+		self.cdn_flags.append(cdn_flag)
+
 		if not decision_flag:
 
 			self.reward_gop += reward_frame
@@ -152,6 +160,10 @@ class FixedEnvWrap(fixed_env.Environment):
 			
 			# calculate next gop sizes for 4 bitrate levels [500k, 800k, 1200k, 1800k]
 			self.next_gop_sizes = self._get_next_gop_sizes(cdn_has_frame)
+			# self.next_gop_sizes[0] = self.next_gop_sizes[0] * np.random.uniform(0.9, 1.1)
+			# self.next_gop_sizes[1] = self.next_gop_sizes[1] * np.random.uniform(0.9, 1.1)
+			# self.next_gop_sizes[2] = self.next_gop_sizes[2] * np.random.uniform(0.9, 1.1)
+			# self.next_gop_sizes[3] = self.next_gop_sizes[3] * np.random.uniform(0.9, 1.1)
 
 			# collect gop state info
 			self.state_gop = np.roll(self.state_gop, -1, axis=1)
@@ -161,7 +173,8 @@ class FixedEnvWrap(fixed_env.Environment):
 			self.state_gop[2, :] = self.frame_thps # last throughput Mbps [0, 10] [conv]
 			self.state_gop[3, -1] = self.gop_delay / 100 # gop delay (100ms) [conv]
 			self.state_gop[4, -1] = (1 if buffer_flag else 0) # if True, no buffering content, should choose target buffer as 0. [fc]
-			self.state_gop[5, -1] = (1 if cdn_flag else 0) # if True, cdn has no content. [fc]
+			# self.state_gop[5, -1] = (1 if cdn_flag else 0) # if True, cdn has no content. [fc]
+			self.state_gop[5, :] = self.cdn_flags # last 16 frame info about cdn server. [conv]
 			self.state_gop[6, :4] = self.next_gop_sizes / 1000000 # gop size (Mb) [0, 10] [conv]
 			# self.state_gop[7, :] = self.frame_thps # finer level thps
 			# test new features, FFT of thps
