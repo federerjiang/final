@@ -30,7 +30,7 @@ class ActorCritic(nn.Module):
 		self.c_conv5 = nn.Conv1d(1, 128, 4) # cdn rebuffer flag
 		self.c_conv6 = nn.Conv1d(1, 128, 3) # next gop sizes 4
 		# self.c_fc = nn.Linear(32*128, 128)
-		self.a_fc = nn.Linear(44 * 128, 128)
+		self.c_fc = nn.Linear(44 * 128, 128)
 		self.c_critic_linear = nn.Linear(128, 1)
 
 
