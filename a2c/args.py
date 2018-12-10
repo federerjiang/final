@@ -1,7 +1,7 @@
 class Args:
 	def __init__(self):
 		# model training parameters
-		self.max_update_step = 20
+		self.max_update_step = 100
 		self.lr = 1e-4 # 
 		self.use_gae = True
 		self.gae = 0.95
