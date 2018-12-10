@@ -65,12 +65,12 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 	count = 0
 	while True:
 		count += 1
-		if count >= 14000:
-			entropy_coef = 1
-		if count >= 16000:
-			entropy_coef = 0.5
-		if count >= 18000:
-			entropy_coef = 0.1
+		# if count >= 14000:
+			# entropy_coef = 1
+		# if count >= 16000:
+			# entropy_coef = 0.5
+		# if count >= 18000:
+			# entropy_coef = 0.1
 
 		for i in range(args.num_processes):
 			model_params[i].put(model.state_dict())

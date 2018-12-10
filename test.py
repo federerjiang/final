@@ -54,7 +54,7 @@ def test(args, shared_model, alg, video_file_id=1):
 	line_plot = vis.line(Y=np.array([0]), opts=dict(
 						xlabel='testing count',
 						ylabel='average reward',
-						title=alg+'-v4'))
+						title=alg+'-pretrain'))
 
 	start = time.time()
 	vis_count = 0
@@ -113,7 +113,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		vis_count += 1
 		reward_all_ave = max(reward_all_ave, 0)
 		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
-		path = 'result-v4/actor.pt-' + str(vis_count)
+		path = 'result-pretrain/actor.pt-' + str(vis_count)
 		torch.save(model.state_dict(), path)
 
 		end = time.time()
@@ -125,6 +125,11 @@ def test(args, shared_model, alg, video_file_id=1):
 
 # result-v3 
 # 4375: 30.12764; 4203: 29.76445; 2463: 29.75238; 1907: 29.444
+# 4376: 29.8; 2450: 29.84
+
+# score:
+# v1: 4375: 50.1903
+# v2: 2450: 
 
 # result-v2
 # 773: 29.7444

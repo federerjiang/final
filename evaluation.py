@@ -62,6 +62,7 @@ def test(args, model, bw_trace, video_file_id=3):
 				if decision_flag or done:
 					reward_gop = env.get_reward_gop()
 					state = env.get_state_gop()
+					print(state)
 					break
 				else:
 					continue
@@ -103,7 +104,7 @@ def test(args, model, bw_trace, video_file_id=3):
 
 if __name__ == '__main__':
 	model = ActorCritic()
-	model.load_state_dict(torch.load('/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/actor.pt-1516'))
+	model.load_state_dict(torch.load('/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/v3/actor.pt-4375'))
 	args = EnvArgs()
 	test(args, model, 'eval-test', video_file_id=5)
 
