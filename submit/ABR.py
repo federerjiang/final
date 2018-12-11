@@ -31,6 +31,9 @@ class Algorithm:
 		self.frame_thps = [0] * 16
 		self.cdn_flags = 0
 
+		self.gop_count = 0
+		self.thps = 0
+
 		self.last_bit_rate = 0
 		self.bitrates = [500.0, 850.0, 1200.0, 1850.0]
 
@@ -154,8 +157,7 @@ class Algorithm:
 			if count >= 200:
 				break
 		# self.frame_thps = self.frame_thps[0:16]
-
-
+		# self.thps = []
 		self.time = time
 		self.buffer_size = S_buffer_size[-1]
 		self.buffer_flag = S_buffer_flag[-1]
@@ -173,8 +175,10 @@ class Algorithm:
 
 		if end_of_video:
 			self.state_gop = np.zeros((7, 16))
+			self.gop_count = 0
 			return 0, 0
 		else:
+			self.gop_count += 1
 			self._update_last_gop_info(time, S_time_interval, S_send_data_size, \
 							S_chunk_len, S_rebuf, S_buffer_size, S_play_time_len, \
 							S_end_delay, S_decision_flag, S_buffer_flag, S_cdn_flag)
@@ -202,9 +206,10 @@ class Algorithm:
 		bitrate, target_buffer = self.action_map[action]
 
 		self.last_bit_rate = bitrate
-		if np.mean(self.frame_thps) < 0.7 and np.std(self.frame_thps) < 0.1:
+
+		# if np.mean(self.frame_thps) < 0.7 and np.std(self.frame_thps) < 0.1:
 			# print('detect extrem low bw ')
-			return 0, 0
+			# return 0, 0
 
 		return bitrate, target_buffer
 
