@@ -6,7 +6,7 @@ from env_args import EnvArgs
 
 class EnvWrap(env.Environment):
 	
-	def __init__(self, video_file_id, trace='mix'):
+	def __init__(self, video_file_id, trace='new'):
 		self.args = EnvArgs()
 		all_cooked_time, all_cooked_bw, all_file_names = load_trace.load_trace(self.args.bw_trace[trace])
 		super().__init__(all_cooked_time=all_cooked_time,
@@ -137,8 +137,8 @@ class EnvWrap(env.Environment):
 
 		# collect cdn flags info
 		self.cdn_flags.pop(0)
-		cdn_flag = 1 if cdn_flag else 0
-		self.cdn_flags.append(cdn_flag)
+		cdn_flag_ = 1 if cdn_flag else 0
+		self.cdn_flags.append(cdn_flag_)
 
 		if not decision_flag:
 
@@ -205,5 +205,11 @@ class EnvWrap(env.Environment):
 		self.gop_size = 0
 		self.next_gop_sizes = 0
 		self.gop_delay = 0
+
+		# record finer level thps, thp/0.5s
+		self.frame_thps = [0] * 16
+		self.last_frame_thp = 0.0
+		# record cdn flags
+		self.cdn_flags = [0] * 16
 
 		return self.state_gop

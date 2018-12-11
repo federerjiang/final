@@ -137,8 +137,8 @@ class FixedEnvWrap(fixed_env.Environment):
 
 		# collect cdn flags info
 		self.cdn_flags.pop(0)
-		cdn_flag = 1 if cdn_flag else 0
-		self.cdn_flags.append(cdn_flag)
+		cdn_flag_ = 1 if cdn_flag else 0
+		self.cdn_flags.append(cdn_flag_)
 
 		if not decision_flag:
 
@@ -205,5 +205,11 @@ class FixedEnvWrap(fixed_env.Environment):
 		self.gop_size = 0
 		self.next_gop_sizes = 0
 		self.gop_delay = 0
+
+		# record finer level thps, thp/0.5s
+		self.frame_thps = [0] * 16
+		self.last_frame_thp = 0.0
+		# record cdn flags
+		self.cdn_flags = [0] * 16
 
 		return self.state_gop

@@ -20,11 +20,15 @@ def test(user_id):
     # TRAIN_TRACES = '../final/trace/network_trace/test/'   #train trace path setting,
     # TRAIN_TRACES = '../trace/test/'
     # TRAIN_TRACES = '../trace/network_trace/high/'
-    # TRAIN_TRACES = '../trace/network_trace/middle/'
-    TRAIN_TRACES = '../trace/network_trace/low/'
-    # video_size_file = '../trace/video_trace/Fengtimo_2018_11_3/frame_trace_'      #video trace path setting,
+    TRAIN_TRACES = '../trace/network_trace/middle/'
+    # TRAIN_TRACES = '../trace/network_trace/low/'
+    # TRAIN_TRACES = '../trace/new_network_trace/'
+    # video_size_file = '../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_'      #video trace path setting,
+    # video_size_file = '../trace/video_trace/room/room-2/frame_trace_'      #video trace path setting,
     # video_size_file = '../trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_'
-    video_size_file = '../trace/video_trace/YYF_2018_08_12/frame_trace_'
+    # video_size_file = '../trace/video_trace/game/game-2/frame_trace_'      #video trace path setting,
+    # video_size_file = '../trace/video_trace/YYF_2018_08_12/frame_trace_'
+    video_size_file = '../trace/video_trace/sports/sports-2/frame_trace_'      #video trace path setting,
     LogFile_Path = "./log/"                #log file trace path setting,
     # Debug Mode: if True, You can see the debug info in the logfile
     #             if False, no log ,but the training speed is high

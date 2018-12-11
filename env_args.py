@@ -16,6 +16,7 @@ class EnvArgs:
 		self.latency_penalty = 0.005
 
 		self.bw_trace = {'mix': '../trace/network_trace/mix_trace/',
+						'new': '../trace/new_network_trace/',
 						'high': '../trace/network_trace/high/',
 						'middle': '../trace/network_trace/middle/',
 						'low': '../trace/network_trace/low/',
