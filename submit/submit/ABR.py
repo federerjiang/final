@@ -3,7 +3,8 @@ import torch
 import torch.nn as nn 
 import torch.nn.functional as F 
 
-NN_MODEL = "/home/team/上山打老虎/submit/model/actor.pt" # model path settings
+# NN_MODEL = "/home/team/上山打老虎/submit/model/actor.pt" # model path settings
+NN_MODEL = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/v3/actor.pt-4375"
 
 
 class Algorithm:
@@ -190,6 +191,10 @@ class Algorithm:
 		bitrate, target_buffer = self.action_map[action]
 
 		self.last_bit_rate = bitrate
+
+		# if np.mean(self.frame_thps) < 0.7 and np.std(self.frame_thps) < 0.1:
+			# print('detect extrem low bw ')
+			# return 0, 0
 
 		return bitrate, target_buffer
 
