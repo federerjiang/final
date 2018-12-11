@@ -27,9 +27,9 @@ class EnvArgs:
 						'eval-test': 'trace/test/'}
 
 		self.video_size_files = \
-		['../trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_',
-		'../trace/video_trace/Fengtimo_2018_11_3/frame_trace_',
-		'../trace/video_trace/YYF_2018_08_12/frame_trace_',
+		['../trace/video_trace/sports/AsianCup_China_Uzbekistan/frame_trace_',
+		'../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_',
+		'../trace/video_trace/game/YYF_2018_08_12/frame_trace_',
 		'trace/video_trace/Fengtimo_2018_11_3/frame_trace_',
 		'trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_',
 		'trace/video_trace/YYF_2018_08_12/frame_trace_']
