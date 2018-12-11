@@ -18,17 +18,17 @@ def test(user_id):
     #LogFile_Path = "/home/game/log/"                #log file trace path setting,
     
     # TRAIN_TRACES = '../final/trace/network_trace/test/'   #train trace path setting,
-    # TRAIN_TRACES = '../trace/test/'
+    # TRAIN_TRACES = '../trace/test-xlow/'
     # TRAIN_TRACES = '../trace/network_trace/high/'
-    TRAIN_TRACES = '../trace/network_trace/middle/'
+    # TRAIN_TRACES = '../trace/network_trace/middle/'
     # TRAIN_TRACES = '../trace/network_trace/low/'
-    # TRAIN_TRACES = '../trace/new_network_trace/'
-    # video_size_file = '../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_'      #video trace path setting,
+    TRAIN_TRACES = '../trace/new_network_trace/'
+    video_size_file = '../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_'      #video trace path setting,
     # video_size_file = '../trace/video_trace/room/room-2/frame_trace_'      #video trace path setting,
     # video_size_file = '../trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_'
     # video_size_file = '../trace/video_trace/game/game-2/frame_trace_'      #video trace path setting,
     # video_size_file = '../trace/video_trace/YYF_2018_08_12/frame_trace_'
-    video_size_file = '../trace/video_trace/sports/sports-2/frame_trace_'      #video trace path setting,
+    # video_size_file = '../trace/video_trace/sports/sports-2/frame_trace_'      #video trace path setting,
     LogFile_Path = "./log/"                #log file trace path setting,
     # Debug Mode: if True, You can see the debug info in the logfile
     #             if False, no log ,but the training speed is high
@@ -161,7 +161,7 @@ def test(user_id):
             # if there is no rebuf ,choose the low target_buffer
             bit_rate , target_buffer = abr.run(time, S_time_interval, S_send_data_size, S_chunk_len, S_rebuf, S_buffer_size, S_play_time_len, S_end_delay, S_decision_flag, S_buffer_flag, S_cdn_flag, end_of_video, cdn_newest_id, download_id, cdn_has_frame, abr_init)
             # ------------------------------------------- End  ------------------------------------------- 
-            # print("action: %d, %d" % (bit_rate, target_buffer))
+            # print("time: %.5f s, action: %d, %d" % (time, bit_rate, target_buffer))
         if end_of_video:
             print("video count", video_count, reward_all)
             reward_all_sum += reward_all / 100

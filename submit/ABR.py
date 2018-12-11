@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 # NN_MODEL = "/home/team/上山打老虎/submit/model/actor.pt" # model path settings
 # actor.pt-1516
-NN_MODEL = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/v5/actor.pt-1218"
+NN_MODEL = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/v5/actor.pt-1143"
 # NN_MODEL = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/actor.pt-1516"
 
 
