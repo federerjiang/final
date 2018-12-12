@@ -3,9 +3,8 @@ import torch
 import torch.nn as nn 
 import torch.nn.functional as F 
 
-# NN_MODEL = "/home/team/上山打老虎/submit/model/actor.pt" # model path settings
-NN_MODEL = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/v3/actor.pt-4375"
-
+NN_MODEL = "/home/team/上山打老虎/submit/model/actor.pt" # model path settings
+NN_MODEL_2 = "/home/team/上山打老虎/submit/model/actor.pt-xlow" # model path settings
 
 class Algorithm:
 
@@ -13,6 +12,9 @@ class Algorithm:
 		
 		self.model = ActorCritic()
 		self.model.load_state_dict(torch.load(NN_MODEL))
+
+		self.model_2 = ActorCritic()
+		self.model_2.load_state_dict(torch.load(NN_MODEL_2))
 
 		self.action_map = self._set_action_map()
 
@@ -26,6 +28,10 @@ class Algorithm:
 		self.buffer_flag = False
 		self.cdn_flag = False
 		self.frame_thps = [0] * 16
+		self.cdn_flags = 0
+
+		self.gop_count = 0
+		self.thps = 0
 
 		self.last_bit_rate = 0
 		self.bitrates = [500.0, 850.0, 1200.0, 1850.0]
@@ -121,6 +127,12 @@ class Algorithm:
 
 		self.gop_delay = np.array(S_end_delay[-50:]).sum()
 		self.gop_size = np.array(S_send_data_size[-50:]).sum()
+		self.cdn_flags = S_cdn_flag[-16:]
+		for i in range(16):
+			if self.cdn_flags == 0:
+				self.cdn_flags[i] = 0
+			else:
+				self.cdn_flags[i] = 1
 		# self.gop_buffer_cnt = S_buffer_flag[-self.gop_len:].count(True)
 		# self.cdn_cnt = S_cdn_flag[-self.gop_len:].count(True)
 
@@ -144,8 +156,7 @@ class Algorithm:
 			if count >= 200:
 				break
 		# self.frame_thps = self.frame_thps[0:16]
-
-
+		# self.thps = []
 		self.time = time
 		self.buffer_size = S_buffer_size[-1]
 		self.buffer_flag = S_buffer_flag[-1]
@@ -163,8 +174,10 @@ class Algorithm:
 
 		if end_of_video:
 			self.state_gop = np.zeros((7, 16))
+			self.gop_count = 0
 			return 0, 0
 		else:
+			self.gop_count += 1
 			self._update_last_gop_info(time, S_time_interval, S_send_data_size, \
 							S_chunk_len, S_rebuf, S_buffer_size, S_play_time_len, \
 							S_end_delay, S_decision_flag, S_buffer_flag, S_cdn_flag)
@@ -179,22 +192,23 @@ class Algorithm:
 			self.state_gop[2, :] = self.frame_thps # last throughput Mbps [0, 10] [conv]
 			self.state_gop[3, -1] = self.gop_delay / 100 # gop delay (100ms) [conv]
 			self.state_gop[4, -1] = (1 if self.buffer_flag else 0) # if True, no buffering content, should choose target buffer as 0. [fc]
-			self.state_gop[5, -1] = (1 if self.cdn_flag else 0) # if True, cdn has no content. [fc]
+			# self.state_gop[5, -1] = (1 if self.cdn_flag else 0) # if True, cdn has no content. [fc]
+			self.state_gop[5, :] = self.cdn_flags
 			self.state_gop[6, :4] = self.next_gop_sizes / 1000000 # gop size (Mb) [0, 10] [conv]
 
 			# print(self.state_gop)
-
-		logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
+		if np.mean(self.frame_thps) < 0.7 and np.std(self.frame_thps) < 0.1:
+			# print('detec extreme low')
+			logit, _ = self.model_2(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
+		else:
+			logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
+		# logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
 		prob = F.softmax(logit, dim=1)
 		_, action = torch.max(prob, 1)
 
 		bitrate, target_buffer = self.action_map[action]
 
 		self.last_bit_rate = bitrate
-
-		# if np.mean(self.frame_thps) < 0.7 and np.std(self.frame_thps) < 0.1:
-			# print('detect extrem low bw ')
-			# return 0, 0
 
 		return bitrate, target_buffer
 
@@ -210,9 +224,11 @@ class ActorCritic(nn.Module):
 		self.a_conv2 = nn.Conv1d(1, 128 ,4) # throughput 16
 		self.a_conv3 = nn.Conv1d(1, 128, 4) # delay 16
 		self.a_fc4 = nn.Linear(1, 128) # client rebuffer flag 1
-		self.a_fc5 = nn.Linear(1, 128) # cdn rebuffer flag 1
+		# self.a_fc5 = nn.Linear(1, 128) # cdn rebuffer flag 1
+		self.a_conv5 = nn.Conv1d(1, 128, 4) # cdn rebuffer flag
 		self.a_conv6 = nn.Conv1d(1, 128, 3) # next gop sizes 4
-		self.a_fc = nn.Linear(32*128, 128)
+		# self.a_fc = nn.Linear(32*128, 128)
+		self.a_fc = nn.Linear(44 * 128, 128)
 		self.a_actor_linear = nn.Linear(128, self.a_dim)
 
 		# critic model
@@ -221,9 +237,11 @@ class ActorCritic(nn.Module):
 		self.c_conv2 = nn.Conv1d(1, 128, 4)	# throughput 16
 		self.c_conv3 = nn.Conv1d(1, 128, 4) # delay 16
 		self.c_fc4 = nn.Linear(1, 128) # client rebuffer flag 1
-		self.c_fc5 = nn.Linear(1, 128) # cdn rebuffer flag 1
+		# self.c_fc5 = nn.Linear(1, 128) # cdn rebuffer flag 1
+		self.c_conv5 = nn.Conv1d(1, 128, 4) # cdn rebuffer flag
 		self.c_conv6 = nn.Conv1d(1, 128, 3) # next gop sizes 4
-		self.c_fc = nn.Linear(32*128, 128)
+		# self.c_fc = nn.Linear(32*128, 128)
+		self.c_fc = nn.Linear(44 * 128, 128)
 		self.c_critic_linear = nn.Linear(128, 1)
 
 
@@ -234,7 +252,8 @@ class ActorCritic(nn.Module):
 		split_2 = F.relu(self.a_conv2(inputs[:, 2:3, 0:16])).view(batch_size, -1)
 		split_3 = F.relu(self.a_conv3(inputs[:, 3:4, 0:16])).view(batch_size, -1)
 		split_4 = F.relu(self.a_fc4(inputs[:, 4:5, -1]))
-		split_5 = F.relu(self.a_fc5(inputs[:, 5:6, -1]))
+		# split_5 = F.relu(self.a_fc5(inputs[:, 5:6, -1]))
+		split_5 = F.relu(self.a_conv5(inputs[:, 5:6, 0:16])).view(batch_size, -1)
 		split_6 = F.relu(self.a_conv6(inputs[:, 6:7, :4])).view(batch_size, -1)
 
 		merge = torch.cat((split_0, split_1, split_2, split_3, split_4, split_5, split_6), 1)
@@ -248,7 +267,8 @@ class ActorCritic(nn.Module):
 		split_2 = F.relu(self.c_conv2(inputs[:, 2:3, 0:16])).view(batch_size, -1)
 		split_3 = F.relu(self.c_conv3(inputs[:, 3:4, 0:16])).view(batch_size, -1)
 		split_4 = F.relu(self.c_fc4(inputs[:, 4:5, -1]))
-		split_5 = F.relu(self.c_fc4(inputs[:, 5:6, -1]))
+		# split_5 = F.relu(self.c_fc5(inputs[:, 5:6, -1]))
+		split_5 = F.relu(self.c_conv5(inputs[:, 5:6, 0:16])).view(batch_size, -1)
 		split_6 = F.relu(self.c_conv6(inputs[:, 6:7, 0:4])).view(batch_size, -1)
 
 		merge = torch.cat((split_0, split_1, split_2, split_3, split_4, split_5, split_6), 1)
