@@ -54,7 +54,7 @@ def agent(rank, args, exp_queue, model_param):
 								a_batch[1:],
 								r_batch[1:],
 								done])
-				model.load_state_dict(model_param.get().cpu())
+				model.load_state_dict(model_param.get())
 			del s_batch[:]
 			del a_batch[:]
 			del r_batch[:]
