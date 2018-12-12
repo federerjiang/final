@@ -22,6 +22,7 @@ class EnvArgs:
 						'low': '../trace/network_trace/low/',
 						'xlow': '../trace/network_trace/xlow/',
 						'test': '../trace/test/',
+						'test-xlow': '../trace/test-xlow/',
 						'eval-high': 'trace/network_trace/high/',
 						'eval-middle': 'trace/network_trace/middle/',
 						'eval-low': 'trace/network_trace/low/',
