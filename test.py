@@ -94,7 +94,8 @@ def test(args, shared_model, alg, video_file_id=1):
 			# print('bitrate: %d, target_buffer: %d, reward is %s' % (bitrate, target_buffer, reward_gop))
 			if done:
 				print("video count %d, reward is %.5f" % (video_count, reward_all))
-				reward_all_sum += reward_all / 100
+				# reward_all_sum += reward_all / 100
+				reward_all_sum += reward_all
 				video_count += 1
 				if reward_all < 0:
 					print('bad model ! just break this loop')
