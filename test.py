@@ -93,12 +93,12 @@ def test(args, shared_model, alg, video_file_id=1):
 			bitrate, target_buffer = action_map[last_action]
 			# print('bitrate: %d, target_buffer: %d, reward is %s' % (bitrate, target_buffer, reward_gop))
 			if done:
-				print("video count %d, reward is %.5f" % (video_count, reward_all))
+				# print("video count %d, reward is %.5f" % (video_count, reward_all))
 				# reward_all_sum += reward_all / 100
 				reward_all_sum += reward_all
 				video_count += 1
 				if reward_all < 0:
-					print('bad model ! just break this loop')
+					# print('bad model ! just break this loop')
 					reward_all_ave = 0
 					break 
 				if video_count >= env.traces_len:
@@ -120,9 +120,9 @@ def test(args, shared_model, alg, video_file_id=1):
 		end = time.time()
 		hours, rem = divmod(end-start, 3600)
 		minutes, seconds = divmod(rem, 60)
-		print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
-		print("average reward of traces are: ", reward_all_ave)
-		print('saved one model in epoch:', vis_count)
+		# print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+		# print("average reward of traces are: ", reward_all_ave)
+		# print('saved one model in epoch:', vis_count)
 
 # result-v3 
 # 4375: 30.12764; 4203: 29.76445; 2463: 29.75238; 1907: 29.444

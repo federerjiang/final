@@ -59,7 +59,7 @@ def agent(rank, args, exp_queue, model_param):
 			del s_batch[:]
 			del a_batch[:]
 			del r_batch[:]
-			# print('agent finish work')
+			print('agent finish work')
 
 		if done:
 			state = env.reset()
