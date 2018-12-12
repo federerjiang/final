@@ -15,11 +15,17 @@ def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
 
 	ba_size = len(s_batch)
 	s_batch = torch.FloatTensor(s_batch).view(-1, args.s_gop_info, args.s_gop_len)
+	if args.cuda:
+		s_batch.cuda()
 	logits, v_batch = model(s_batch, batch_size=ba_size)
 	r_batch = torch.FloatTensor(r_batch).view(ba_size, -1)
 	R_batch = torch.zeros(r_batch.shape)
 	a_batch = torch.LongTensor(a_batch).view(ba_size, -1)
-
+	if args.cuda:
+		r_batch.cuda()
+		R_batch.cuda()
+		a_batch.cuda()
+		
 	if done:
 		R_batch[-1, 0] = 0
 	else:
@@ -57,11 +63,15 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	print(device)
-	
+
 	model = ActorCritic()
 	model.train()
 	# model.load_state_dict(share_model.state_dict())
+	for i in range(args.num_processes):
+		model_params[i].put(model.state_dict())
 
+	if args.cuda:
+		model.cuda()
 	optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-5)
 	entropy_coef = args.entropy_coef
 
@@ -75,12 +85,9 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 		# if count >= 18000:
 			# entropy_coef = 0.1
 
-		for i in range(args.num_processes):
-			model_params[i].put(model.state_dict())
 		# assemble experiences from the agents
 		for i in range(args.num_processes):
 			s_batch, a_batch, r_batch, done = exp_queues[i].get()
-
 			loss = compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef)
 			optimizer.zero_grad()
 			loss.backward(retain_graph=True)
@@ -88,5 +95,11 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 			optimizer.step()
 		print('update model parameters ', count)
 		# model.zero_grad()
+		if args.cuda:
+			model = model.cpu()
+		for i in range(args.num_processes):
+			model_params[i].put(model.state_dict())
 		share_model.load_state_dict(model.state_dict())
+		if args.cuda:
+			model = model.cuda()
 	
