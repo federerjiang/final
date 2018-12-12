@@ -83,6 +83,6 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 			torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
 			optimizer.step()
 		print('update model parameters ', count)
-		model.zero_grad()
+		# model.zero_grad()
 		share_model.load_state_dict(model.state_dict())
 	

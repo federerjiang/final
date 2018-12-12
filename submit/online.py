@@ -10,8 +10,8 @@ import LiveStreamingEnv.load_trace as load_trace
 import time
 import numpy as np
 # import tensorflow as tf
-from submit import ABR
-# import ABR
+# from submit import ABR
+import ABR
 # path setting
 def test(user_id):
     #TRAIN_TRACES = '/home/game/test_sim_traces/'   #train trace path setting,
@@ -22,8 +22,8 @@ def test(user_id):
     # TRAIN_TRACES = '../trace/test-xlow/'
     # TRAIN_TRACES = '../trace/network_trace/high/'
     # TRAIN_TRACES = '../trace/network_trace/middle/'
-    # TRAIN_TRACES = '../trace/network_trace/low/'
-    TRAIN_TRACES = '../trace/new_network_trace/'
+    TRAIN_TRACES = '../trace/network_trace/xlow/'
+    # TRAIN_TRACES = '../trace/new_network_trace/'
     # video_size_file = '../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_'      #video trace path setting,
     video_size_file = '../trace/video_trace/room/room-2/frame_trace_'      #video trace path setting,
     # video_size_file = '../trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_'
