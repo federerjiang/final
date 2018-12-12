@@ -16,15 +16,15 @@ def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
 	ba_size = len(s_batch)
 	s_batch = torch.FloatTensor(s_batch).view(-1, args.s_gop_info, args.s_gop_len)
 	if args.cuda:
-		s_batch.cuda()
+		s_batch = s_batch.cuda()
 	logits, v_batch = model(s_batch, batch_size=ba_size)
 	r_batch = torch.FloatTensor(r_batch).view(ba_size, -1)
 	R_batch = torch.zeros(r_batch.shape)
 	a_batch = torch.LongTensor(a_batch).view(ba_size, -1)
 	if args.cuda:
-		r_batch.cuda()
-		R_batch.cuda()
-		a_batch.cuda()
+		r_batch = r_batch.cuda()
+		R_batch = R_batch.cuda()
+		a_batch = a_batch.cuda()
 
 	if done:
 		R_batch[-1, 0] = 0
@@ -71,7 +71,7 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 		model_params[i].put(model.state_dict())
 
 	if args.cuda:
-		model.cuda()
+		model = model.cuda()
 	optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-5)
 	entropy_coef = args.entropy_coef
 
@@ -96,10 +96,10 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 		print('update model parameters ', count)
 		# model.zero_grad()
 		if args.cuda:
-			model.cpu()
+			model = model.cpu()
 		for i in range(args.num_processes):
 			model_params[i].put(model.state_dict())
 		share_model.load_state_dict(model.state_dict())
 		if args.cuda:
-			model.cuda()
+			model = model.cuda()
 	
