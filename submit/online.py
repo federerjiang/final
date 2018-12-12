@@ -22,8 +22,8 @@ def test(user_id):
     # TRAIN_TRACES = '../trace/test-xlow/'
     # TRAIN_TRACES = '../trace/network_trace/high/'
     # TRAIN_TRACES = '../trace/network_trace/middle/'
-    TRAIN_TRACES = '../trace/network_trace/xlow/'
-    # TRAIN_TRACES = '../trace/new_network_trace/'
+    # TRAIN_TRACES = '../trace/network_trace/xlow/'
+    TRAIN_TRACES = '../trace/new_network_trace/'
     # video_size_file = '../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_'      #video trace path setting,
     video_size_file = '../trace/video_trace/room/room-2/frame_trace_'      #video trace path setting,
     # video_size_file = '../trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_'

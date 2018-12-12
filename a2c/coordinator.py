@@ -55,6 +55,9 @@ def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
 def coordinator(rank, args, share_model, exp_queues, model_params):
 	assert len(exp_queues) == args.num_processes
 
+	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	print(device)
+	
 	model = ActorCritic()
 	model.train()
 	# model.load_state_dict(share_model.state_dict())
@@ -77,6 +80,7 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 		# assemble experiences from the agents
 		for i in range(args.num_processes):
 			s_batch, a_batch, r_batch, done = exp_queues[i].get()
+
 			loss = compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef)
 			optimizer.zero_grad()
 			loss.backward(retain_graph=True)
