@@ -54,7 +54,7 @@ def test(args, shared_model, alg, video_file_id=1):
 	line_plot = vis.line(Y=np.array([0]), opts=dict(
 						xlabel='testing count',
 						ylabel='average reward',
-						title=alg+'-mix-v1'))
+						title=alg+'-cooked-v1'))
 
 	start = time.time()
 	vis_count = 0
@@ -68,7 +68,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		last_action = 0
 		# update model before testing all trace files
 		# time.sleep(5)
-		print('load updated model')
+		# print('load updated model')
 		model.load_state_dict(shared_model.state_dict())
 		while True:
 			# get the reward for one gop
@@ -114,7 +114,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		vis_count += 1
 		reward_all_ave = max(reward_all_ave, 0)
 		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
-		path = 'result-mix-v1/actor.pt-' + str(vis_count)
+		path = 'result-cooked-v1/actor.pt-' + str(vis_count)
 		torch.save(model.state_dict(), path)
 
 		end = time.time()
