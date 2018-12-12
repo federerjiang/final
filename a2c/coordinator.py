@@ -61,8 +61,8 @@ def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
 def coordinator(rank, args, share_model, exp_queues, model_params):
 	assert len(exp_queues) == args.num_processes
 
-	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-	print(device)
+	# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+	# print(device)
 
 	model = ActorCritic()
 	model.train()
@@ -70,8 +70,8 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 	for i in range(args.num_processes):
 		model_params[i].put(model.state_dict())
 
-	if args.cuda:
-		model = model.cuda()
+	# if args.cuda:
+		# model = model.cuda()
 	optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-5)
 	entropy_coef = args.entropy_coef
 
@@ -95,11 +95,11 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 			optimizer.step()
 		print('update model parameters ', count)
 		# model.zero_grad()
-		if args.cuda:
-			model = model.cpu()
+		# if args.cuda:
+			# model = model.cpu()
 		for i in range(args.num_processes):
 			model_params[i].put(model.state_dict())
 		share_model.load_state_dict(model.state_dict())
-		if args.cuda:
-			model = model.cuda()
+		# if args.cuda:
+			# model = model.cuda()
 	
