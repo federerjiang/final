@@ -25,7 +25,7 @@ def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
 		r_batch.cuda()
 		R_batch.cuda()
 		a_batch.cuda()
-		
+
 	if done:
 		R_batch[-1, 0] = 0
 	else:
@@ -96,10 +96,10 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 		print('update model parameters ', count)
 		# model.zero_grad()
 		if args.cuda:
-			model = model.cpu()
+			model.cpu()
 		for i in range(args.num_processes):
 			model_params[i].put(model.state_dict())
 		share_model.load_state_dict(model.state_dict())
 		if args.cuda:
-			model = model.cuda()
+			model.cuda()
 	
