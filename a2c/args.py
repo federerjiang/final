@@ -15,5 +15,6 @@ class Args:
 		self.seed = 30 #
 		self.s_gop_info = 7 # or 7
 		self.s_gop_len = 16
+		self.cuda = True
 
 
