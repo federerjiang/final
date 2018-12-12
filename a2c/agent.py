@@ -2,6 +2,7 @@ import torch
 import torch.nn.functional as F 
 # import torch.optim as optim
 import numpy as np
+import random
 
 
 import sys
@@ -45,7 +46,7 @@ def agent(rank, args, exp_queue, model_param):
 			logit, value = model(torch.FloatTensor(state).view(-1, args.s_gop_info, args.s_gop_len))
 			prob = F.softmax(logit, dim=1)
 			action = prob.multinomial(1).data.numpy()[0][0]
-		
+
 		done = end_of_video 
 
 		if len(r_batch) >= args.max_update_step or done:
