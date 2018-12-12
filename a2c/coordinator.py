@@ -100,6 +100,6 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 		for i in range(args.num_processes):
 			model_params[i].put(model.state_dict())
 		share_model.load_state_dict(model.state_dict())
-		# if args.cuda:
-			# model = model.cuda()
+		if args.cuda:
+			model = model.cuda()
 	
