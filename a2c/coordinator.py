@@ -102,4 +102,6 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 		share_model.load_state_dict(model.state_dict())
 		# if args.cuda:
 			# model = model.cuda()
+		# if count >60:
+			# print(l)
 	
