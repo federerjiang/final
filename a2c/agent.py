@@ -18,7 +18,7 @@ def agent(rank, args, exp_queue, model_param):
 	env = EnvWrap(video_file_id) # bw_trace default is mix
 
 	model = ActorCritic()
-	model.load_state_dict(model_param.get())
+	model.load_state_dict(model_param.get().cpu())
 	model.eval()
 
 	state = env.reset()
@@ -54,7 +54,7 @@ def agent(rank, args, exp_queue, model_param):
 								a_batch[1:],
 								r_batch[1:],
 								done])
-				model.load_state_dict(model_param.get())
+				model.load_state_dict(model_param.get().cpu())
 			del s_batch[:]
 			del a_batch[:]
 			del r_batch[:]

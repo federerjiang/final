@@ -44,7 +44,7 @@ def test(args, shared_model, alg, video_file_id=1):
 
 	# time.sleep(10)
 	model = ActorCritic()
-	model.load_state_dict(shared_model.state_dict())
+	model.load_state_dict(shared_model.state_dict().cpu())
 	model.eval()
 
 	state = env.reset()
@@ -69,7 +69,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		# update model before testing all trace files
 		# time.sleep(5)
 		# print('load updated model')
-		model.load_state_dict(shared_model.state_dict()) 
+		model.load_state_dict(shared_model.state_dict().cpu()) 
 		while True:
 			# get the reward for one gop
 			while True:

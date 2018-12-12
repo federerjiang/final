@@ -35,6 +35,9 @@ if __name__ == '__main__':
 	p = mp.Process(target=test, args=(args, model, 'a2c', 1))
 	p.start()
 
+	if args.cuda():
+		model = model.cuda()
+
 	# creat a process for coordinator
 	coordinator = mp.Process(target=coordinator, args=(args.num_processes, args, model, exp_queues, model_params))
 	coordinator.start()
