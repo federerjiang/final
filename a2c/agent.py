@@ -18,7 +18,7 @@ def agent(rank, args, exp_queue, model_param):
 	env = EnvWrap(video_file_id) # bw_trace default is mix
 
 	model = ActorCritic()
-	model.load_state_dict(model_param.get().cpu())
+	model.load_state_dict(model_param.get())
 	model.eval()
 
 	state = env.reset()

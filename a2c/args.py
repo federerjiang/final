@@ -3,7 +3,7 @@ class Args:
 		# model training parameters
 		self.max_update_step = 20
 		self.lr = 1e-4 # 
-		self.use_gae = True
+		self.use_gae = False
 		self.gae = 0.95
 		self.gamma = 0.99 #
 		self.tau = 1.00 #
