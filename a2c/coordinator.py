@@ -17,6 +17,7 @@ def compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef):
 	s_batch = torch.FloatTensor(s_batch).view(-1, args.s_gop_info, args.s_gop_len)
 	if args.cuda:
 		s_batch = s_batch.cuda()
+	model.zero_grad()
 	logits, v_batch = model(s_batch, batch_size=ba_size)
 	r_batch = torch.FloatTensor(r_batch).view(ba_size, -1)
 	R_batch = torch.zeros(r_batch.shape)
@@ -91,7 +92,10 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 			loss = compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef)
 			optimizer.zero_grad()
 			loss.backward(retain_graph=True)
+			print('loss: ', loss)
 			torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
+			# for param in model.parameters():
+        		# param.grad.data.clamp_(-1, 1)
 			optimizer.step()
 		print('update model parameters ', count)
 		# model.zero_grad()
