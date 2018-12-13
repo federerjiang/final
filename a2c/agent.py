@@ -43,9 +43,13 @@ def agent(rank, args, exp_queue, model_param):
 		r_batch.append(reward_gop)
 
 		with torch.no_grad():
-			logit, value = model(torch.FloatTensor(state).view(-1, args.s_gop_info, args.s_gop_len))
-			prob = F.softmax(logit, dim=1)
-			action = prob.multinomial(1).data.numpy()[0][0]
+			try:
+				logit, value = model(torch.FloatTensor(state).view(-1, args.s_gop_info, args.s_gop_len))
+				prob = F.softmax(logit, dim=1)
+				action = prob.multinomial(1).data.numpy()[0][0]
+			except RuntimeError:
+				print('logit: ', logit)
+				print('prob: ', prob)
 
 		done = end_of_video 
 
