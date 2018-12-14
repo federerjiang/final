@@ -203,12 +203,13 @@ class Algorithm:
 			self.state_gop[6, :4] = self.next_gop_sizes / 1000000 # gop size (Mb) [0, 10] [conv]
 
 			# print(self.state_gop)
-		# if np.mean(self.frame_thps) < 0.7 and np.std(self.frame_thps) < 0.1:
-			# print('detec extreme low')
-			# logit, _ = self.model_2(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
-		# else:
-			# logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
-		logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
+		if np.mean(self.frame_thps) < 1 and np.std(self.frame_thps) < 0.2:
+			print('detec extreme low')
+			logit, _ = self.model_2(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
+		else:
+			# print('detect high')
+			logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
+		# logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
 		prob = F.softmax(logit, dim=1)
 		_, action = torch.max(prob, 1)
 
