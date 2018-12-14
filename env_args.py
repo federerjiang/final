@@ -15,7 +15,7 @@ class EnvArgs:
 		self.rebuf_penalty = 1.5
 		self.latency_penalty = 0.005
 
-		self.bw_trace = {'mix': '../trace/network_trace/mix_trace/',
+		self.bw_trace = {'mix': '../trace/network_trace/mix_trace_m-l-xl/',
 						'cooked': '../trace/cooked_trace/',
 						'new': '../trace/new_network_trace/',
 						'high': '../trace/network_trace/high/',
