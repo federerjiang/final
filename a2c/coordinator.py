@@ -93,9 +93,9 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 			optimizer.zero_grad()
 			loss.backward(retain_graph=True)
 			print('loss: ', loss)
-			torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
-			# for param in model.parameters():
-        		# param.grad.data.clamp_(-1, 1)
+			# torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
+			for param in model.parameters():
+        		param.grad.data.clamp_(-1, 1)
 			optimizer.step()
 		print('update model parameters ', count)
 		# model.zero_grad()

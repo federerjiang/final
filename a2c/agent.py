@@ -48,8 +48,10 @@ def agent(rank, args, exp_queue, model_param):
 				prob = F.softmax(logit, dim=1)
 				action = prob.multinomial(1).data.numpy()[0][0]
 			except RuntimeError:
+				print('state: '. state)
 				print('logit: ', logit)
 				print('prob: ', prob)
+				break
 
 		done = end_of_video 
 
