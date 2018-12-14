@@ -92,12 +92,19 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 			loss = compute_loss(args, s_batch, a_batch, r_batch, done, model, entropy_coef)
 			optimizer.zero_grad()
 			loss.backward(retain_graph=True)
-			print('loss: ', loss)
-			# torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
-			for param in model.parameters():
-        		param.grad.data.clamp_(-1, 1)
+			if torch.isnan(loss):
+				torch.save(s_batch, 's_batch-coor.pt')
+				torch.save(loss, 'loss.pt')
+				print('s_batch', s_batch)
+				print('loss: ', loss)
+				break
+			torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
+			# for param in model.parameters():
+        		# param.grad.data.clamp_(-1, 1)
 			optimizer.step()
 		print('update model parameters ', count)
+		if torch.isnan(loss):
+			break
 		# model.zero_grad()
 		# if args.cuda:
 			# model = model.cpu()

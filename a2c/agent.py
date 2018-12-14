@@ -48,6 +48,9 @@ def agent(rank, args, exp_queue, model_param):
 				prob = F.softmax(logit, dim=1)
 				action = prob.multinomial(1).data.numpy()[0][0]
 			except RuntimeError:
+				torch.save(state, 'state.pt')
+				torch.save(logit, 'logit.pt')
+				torch.save(prob, 'prob.pt')
 				print('state: '. state)
 				print('logit: ', logit)
 				print('prob: ', prob)
