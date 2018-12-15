@@ -35,11 +35,11 @@ class EnvArgs:
 
 		self.video_size_files_room = \
 		['../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_',
-		'../trace/video_trace/room/game_1/frame_trace_',
-		'../trace/video_trace/room/game_2/frame_trace_',
-		'../trace/video_trace/room/game_3/frame_trace_',
-		'../trace/video_trace/room/game_4/frame_trace_',
-		'../trace/video_trace/room/game_5/frame_trace_',]
+		'../trace/video_trace/room/room_1/frame_trace_',
+		'../trace/video_trace/room/room_2/frame_trace_',
+		'../trace/video_trace/room/room_3/frame_trace_',
+		'../trace/video_trace/room/room_4/frame_trace_',
+		'../trace/video_trace/room/room_5/frame_trace_',]
 
 		self.video_size_files_sports = \
 		['../trace/video_trace/sports/AsianCup_China_Uzbekistan/frame_trace_',
