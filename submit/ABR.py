@@ -6,7 +6,9 @@ import torch.nn.functional as F
 # NN_MODEL = "/home/team/上山打老虎/submit/model/actor.pt" # model path settings
 # actor.pt-1516
 NN_MODEL = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/v5/actor.pt-1218"
-NN_MODEL_2 = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/xlow-2/actor.pt-580"
+# NN_MODEL_2 = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/xlow-2/actor.pt-580"
+NN_MODEL_2 = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/mlx-v1/actor.pt-2621"
+
 
 # NN_MODEL = "/home/jiang/pytorch-projects/final/a2c/seletec_result/v5/actor.pt-1218"
 # NN_MODEL = "/Users/federerjiang/research-project/aitrans-competition/final/a2c/seletec_result/actor.pt-1516"
@@ -204,12 +206,12 @@ class Algorithm:
 
 			# print(self.state_gop)
 		if np.mean(self.frame_thps) < 1 and np.std(self.frame_thps) < 0.2:
-			print('detec extreme low')
+			# print('detec extreme low')
 			logit, _ = self.model_2(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
 		else:
 			# print('detect high')
 			logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
-		# logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
+		logit, _ = self.model_2(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
 		prob = F.softmax(logit, dim=1)
 		_, action = torch.max(prob, 1)
 

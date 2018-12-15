@@ -32,7 +32,7 @@ if __name__ == '__main__':
 		exp_queues.append(mp.Queue(1))
 		model_params.append(mp.Queue(1))
 
-	p = mp.Process(target=test, args=(args, model, 'a2c', 1))
+	p = mp.Process(target=test, args=(args, model, 'a2c'))
 	p.start()
 
 	# creat a process for coordinator

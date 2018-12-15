@@ -15,24 +15,51 @@ class EnvArgs:
 		self.rebuf_penalty = 1.5
 		self.latency_penalty = 0.005
 
-		self.bw_trace = {'mix': '../trace/network_trace/mix_trace_m-l-xl/',
+		self.bw_trace = {'mix-hml': '../trace/network_trace/mix_trace_h-m-l/',
+						'mix-mlx': '../trace/network_trace/mix_trace_m-l-xl/',
+						'mix-lx': '../trace/network_trace/mix_trace_l-xl/',
 						'cooked': '../trace/cooked_trace/',
 						'new': '../trace/new_network_trace/',
 						'high': '../trace/network_trace/high/',
 						'middle': '../trace/network_trace/middle/',
 						'low': '../trace/network_trace/low/',
 						'xlow': '../trace/network_trace/xlow/',
-						'test': '../trace/test/',
+						'test-hml': '../trace/test-hml/',
+						'test-mlx': '../trace/test-mlx/',
+						'test-lx': '../trace/test-lx/',
 						'test-xlow': '../trace/test-xlow/',
 						'eval-high': 'trace/network_trace/high/',
 						'eval-middle': 'trace/network_trace/middle/',
 						'eval-low': 'trace/network_trace/low/',
 						'eval-test': 'trace/test/'}
 
-		self.video_size_files = \
+		self.video_size_files_room = \
+		['../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_',
+		'../trace/video_trace/room/game_1/frame_trace_',
+		'../trace/video_trace/room/game_2/frame_trace_',
+		'../trace/video_trace/room/game_3/frame_trace_',
+		'../trace/video_trace/room/game_4/frame_trace_',
+		'../trace/video_trace/room/game_5/frame_trace_',]
+
+		self.video_size_files_sports = \
 		['../trace/video_trace/sports/AsianCup_China_Uzbekistan/frame_trace_',
-		'../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_',
-		'../trace/video_trace/game/YYF_2018_08_12/frame_trace_',
-		'trace/video_trace/Fengtimo_2018_11_3/frame_trace_',
-		'trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_',
-		'trace/video_trace/YYF_2018_08_12/frame_trace_']
+		'../trace/video_trace/sports/sports_1/frame_trace_',
+		'../trace/video_trace/sports/sports_2/frame_trace_',
+		'../trace/video_trace/sports/sports_3/frame_trace_',
+		'../trace/video_trace/sports/sports_4/frame_trace_',
+		'../trace/video_trace/sports/sports_5/frame_trace_',]
+
+		self.video_size_files_game = \
+		['../trace/video_trace/game/YYF_2018_08_12/frame_trace_',
+		'../trace/video_trace/game/game_1/frame_trace_',
+		'../trace/video_trace/game/game_2/frame_trace_',
+		'../trace/video_trace/game/game_3/frame_trace_',
+		'../trace/video_trace/game/game_4/frame_trace_',
+		'../trace/video_trace/game/game_5/frame_trace_',]
+
+		# ['../trace/video_trace/sports/AsianCup_China_Uzbekistan/frame_trace_',
+		# '../trace/video_trace/room/Fengtimo_2018_11_3/frame_trace_',
+		# '../trace/video_trace/game/YYF_2018_08_12/frame_trace_',
+		# 'trace/video_trace/Fengtimo_2018_11_3/frame_trace_',
+		# 'trace/video_trace/AsianCup_China_Uzbekistan/frame_trace_',
+		# 'trace/video_trace/YYF_2018_08_12/frame_trace_']

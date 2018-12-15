@@ -14,7 +14,7 @@ from model import ActorCritic
 
 
 def agent(rank, args, exp_queue, model_param):
-	video_file_id = rank % 3
+	video_file_id = rank % 5
 	# env = EnvWrap(video_file_id, bw_trace='low')
 	env = EnvWrap(video_file_id) # bw_trace default is mix
 

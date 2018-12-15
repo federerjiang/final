@@ -37,7 +37,7 @@ def _set_action_map():
 	return action_map
 
 
-def test(args, shared_model, alg, video_file_id=1):
+def test(args, shared_model, alg, video_file_id=5):
 	action_map = _set_action_map()
 
 	env = FixedEnvWrap(video_file_id)
@@ -54,7 +54,7 @@ def test(args, shared_model, alg, video_file_id=1):
 	line_plot = vis.line(Y=np.array([0]), opts=dict(
 						xlabel='testing count',
 						ylabel='average reward',
-						title=alg+'-mlx-v1'))
+						title=alg+'-room-hml-v1'))
 
 	start = time.time()
 	vis_count = 0
@@ -114,7 +114,7 @@ def test(args, shared_model, alg, video_file_id=1):
 		vis_count += 1
 		reward_all_ave = max(reward_all_ave, 0)
 		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
-		path = 'result-mlx-v1/actor.pt-' + str(vis_count)
+		path = 'result-room-hml-v1/actor.pt-' + str(vis_count)
 		torch.save(model.state_dict(), path)
 
 		end = time.time()
@@ -135,6 +135,9 @@ def test(args, shared_model, alg, video_file_id=1):
 
 # result-v2
 # 773: 29.7444
+
+# result-mlx-v1
+# 1910: 1722.9; 1914:1714; 2621:1703
 
 
 
