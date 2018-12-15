@@ -6,7 +6,7 @@ from env_args import EnvArgs
 
 class EnvWrap(env.Environment):
 	
-	def __init__(self, video_file_id, trace='mix-hml'):
+	def __init__(self, video_file_id, trace='mix-lx'):
 		self.args = EnvArgs()
 		all_cooked_time, all_cooked_bw, all_file_names = load_trace.load_trace(self.args.bw_trace[trace])
 		super().__init__(all_cooked_time=all_cooked_time,
