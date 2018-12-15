@@ -6,13 +6,13 @@ from env_args import EnvArgs
 
 class EnvWrap(env.Environment):
 	
-	def __init__(self, video_file_id, trace='mix-lx'):
+	def __init__(self, video_file_id, trace='mix-hml'):
 		self.args = EnvArgs()
 		all_cooked_time, all_cooked_bw, all_file_names = load_trace.load_trace(self.args.bw_trace[trace])
 		super().__init__(all_cooked_time=all_cooked_time,
 						 all_cooked_bw=all_cooked_bw,
 						 random_seed=self.args.random_seed,
-						 VIDEO_SIZE_FILE =self.args.video_size_files_room[video_file_id], 
+						 VIDEO_SIZE_FILE =self.args.video_size_files_sports[video_file_id], 
 						 logfile_path='./log/', 
 						 Debug=False)
 		
