@@ -197,9 +197,11 @@ class Algorithm:
 			self.state_gop[6, :4] = self.next_gop_sizes / 1000000 # gop size (Mb) [0, 10] [conv]
 
 			# print(self.state_gop)
-		if np.mean(self.frame_thps) < 1 and np.std(self.frame_thps) < 0.2:
+		low_flag = False
+		if np.mean(self.frame_thps) < 1 and (np.std(self.frame_thps) < 0.2 or np.max(self.frame_thps[-4:])<1.1):
 			# print('detec extreme low')
 			logit, _ = self.model_2(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
+			low_flag = True
 		else:
 			logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
 		# logit, _ = self.model(torch.FloatTensor(self.state_gop).view(-1, 7, 16))
@@ -207,7 +209,8 @@ class Algorithm:
 		_, action = torch.max(prob, 1)
 
 		bitrate, target_buffer = self.action_map[action]
-
+		if low_flag and bitrate >= 1:
+			bitrate = 1
 		self.last_bit_rate = bitrate
 
 		return bitrate, target_buffer
