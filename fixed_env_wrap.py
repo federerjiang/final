@@ -12,7 +12,7 @@ class FixedEnvWrap(fixed_env.Environment):
 		super().__init__(all_cooked_time=all_cooked_time,
 						 all_cooked_bw=all_cooked_bw,
 						 random_seed=self.args.random_seed,
-						 VIDEO_SIZE_FILE =self.args.video_size_files_game[video_file_id], 
+						 VIDEO_SIZE_FILE =self.args.video_size_files_sports[video_file_id], 
 						 logfile_path='./log/', 
 						 Debug=False)
 		
