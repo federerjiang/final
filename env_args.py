@@ -4,7 +4,7 @@ class EnvArgs:
 		self.s_gop_len = 16 # gop based info
 		self.s_gop_info = 7 # or 7
 		self.a_dim = 8
-		self.random_seed = 50
+		self.random_seed = 20 # 50
 		self.bitrate_levels = 4
 		self.bitrate = [500.0, 850.0, 1200.0, 1850.0] # kbps
 		self.target_buffer_levels = 2
