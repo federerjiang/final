@@ -79,11 +79,11 @@ def coordinator(rank, args, share_model, exp_queues, model_params):
 	count = 0
 	while True:
 		count += 1
-		if count >= 9000:
+		if count >= 14000:
 			entropy_coef = 1
-		if count >= 10000:
+		if count >= 17000:
 			entropy_coef = 0.5
-		if count >= 11000:
+		if count >= 19000:
 			entropy_coef = 0.1
 
 		# assemble experiences from the agents
